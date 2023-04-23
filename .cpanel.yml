@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=n/home/kp3o69tenb63/public_html/infinityadminserver
+    - export REPO=https://github.com/matannturgeman/InfinityAdminServer.git
+    - git clone $REPO $DEPLOYPATH
+    - cd $DEPLOYPATH
+    - git checkout main
+    - git pull origin main
+    - /home/kp3o69tenb63/.nvm/versions/node/v10.24.1/bin/npm install
+    - /home/kp3o69tenb63/.nvm/versions/node/v10.24.1/bin/npm run build
+    - cp -R dist/* $DEPLOYPATH
