@@ -10,3 +10,4 @@ deployment:
     - /home/kp3o69tenb63/.nvm/versions/node/v10.24.1/bin/npm install
     - /home/kp3o69tenb63/.nvm/versions/node/v10.24.1/bin/npm run build
     - cp -R dist/* $DEPLOYPATH
+    - /home/kp3o69tenb63/.nvm/versions/node/v10.24.1/bin/npm run start:prod
