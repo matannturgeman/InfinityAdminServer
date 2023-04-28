@@ -6,9 +6,18 @@ describe('AdminController', () => {
   let controller: AdminController;
 
   beforeEach(async () => {
+    const mockAdminService = {
+      findAll: jest.fn().mockResolvedValue([]),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AdminController],
-      providers: [AdminService]
+      providers: [
+        {
+          provide: AdminService,
+          useValue: mockAdminService,
+        },
+      ],
     }).compile();
 
     controller = module.get<AdminController>(AdminController);
