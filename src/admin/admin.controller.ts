@@ -6,7 +6,7 @@ export class AdminController {
     constructor(private readonly adminService: AdminService) {}
 
     @Get()
-    getAdmin(): string {
-        return this.adminService.get();
+    getAdmin() {
+        return this.adminService.findAll();
     }
 }

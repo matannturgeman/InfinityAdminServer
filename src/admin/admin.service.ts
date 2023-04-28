@@ -1,8 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { Injectable, Inject } from '@nestjs/common';
+import { Admin } from './interfaces/admin.interface';
 
 @Injectable()
 export class AdminService {
-    get(): string {
-        return "Hello Admin";
-    }
+  constructor(
+    @Inject('ADMIN_MODEL')
+    private adminModel: Model<Admin>,
+  ) {}
+
+  async create(admin: Admin): Promise<Admin> {
+    const createdAdmin = new this.adminModel(admin);
+    return createdAdmin.save();
+  }
+
+  async findAll(): Promise<Admin[]> {
+    return this.adminModel.find().exec();
+  }
 }
