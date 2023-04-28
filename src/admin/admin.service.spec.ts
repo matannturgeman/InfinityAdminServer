@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { AdminService } from './admin.service';
 
 describe('AdminService', () => {
@@ -10,7 +10,7 @@ describe('AdminService', () => {
       save: jest.fn().mockResolvedValue({}),
     };
 
-    const module: TestingModule = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       providers: [
         AdminService,
         {

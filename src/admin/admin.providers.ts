@@ -1,10 +1,11 @@
 import { Connection } from 'mongoose';
-import { AdminSchema, name } from '../database/schemas/admin.schema';
+import { getModelForClass } from '@typegoose/typegoose';
+import { Admin } from '../database/schemas/admin.schema';
 
 export const adminProviders = [
   {
     provide: 'ADMIN_MODEL',
-    useFactory: (connection: Connection) => connection.model(name, AdminSchema),
+    useFactory: (connection: Connection) => getModelForClass(Admin, { existingConnection: connection }),
     inject: ['DATABASE_CONNECTION'],
   },
 ];

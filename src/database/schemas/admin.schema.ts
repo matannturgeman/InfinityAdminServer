@@ -1,9 +1,14 @@
-import * as mongoose from 'mongoose';
+import { prop } from '@typegoose/typegoose';
 
-export const AdminSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
-  breed: String,
-});
+export class Admin {
+  @prop()
+  name!: string;
+
+  @prop()
+  age!: number;
+
+  @prop()
+  breed!: string;
+}
 
 export const name = 'Admin';

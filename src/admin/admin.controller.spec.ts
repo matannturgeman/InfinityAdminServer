@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 
@@ -10,7 +10,7 @@ describe('AdminController', () => {
       findAll: jest.fn().mockResolvedValue([]),
     };
 
-    const module: TestingModule = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       controllers: [AdminController],
       providers: [
         {

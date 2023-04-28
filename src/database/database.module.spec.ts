@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { DatabaseModule } from './database.module';
 
 describe('DatabaseModule', () => {
   let module: DatabaseModule;
 
   beforeEach(async () => {
-    const testingModule: TestingModule = await Test.createTestingModule({
+    const testingModule = await Test.createTestingModule({
       imports: [DatabaseModule],
     })
       .overrideProvider('DATABASE_CONNECTION')
