@@ -11,5 +11,6 @@ import { DatabaseModule } from '../database/database.module';
     AdminService,
     ...adminProviders,
   ],
+  exports: [AdminService],
 })
 export class AdminModule {}

@@ -14,7 +14,11 @@ export class AdminService {
     return createdAdmin.save();
   }
 
-  async findAll(): Promise<Admin[]> {
-    return this.adminModel.find().exec();
+  async find(conditions: { [k: string]: any } = {}): Promise<Admin[]> {
+    return this.adminModel.find(conditions).exec();
+  }
+
+  async findOne(conditions: { [k: string]: any } = {}): Promise<Admin> {
+    return this.adminModel.findOne(conditions).exec();
   }
 }
