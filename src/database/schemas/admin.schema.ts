@@ -2,13 +2,11 @@ import { prop } from '@typegoose/typegoose';
 
 export class Admin {
   @prop()
-  name!: string;
+  name: string;
 
   @prop()
-  age!: number;
+  password: string;
 
   @prop()
-  breed!: string;
+  email: string;
 }
-
-export const name = 'Admin';
