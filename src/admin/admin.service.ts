@@ -15,10 +15,10 @@ export class AdminService {
   }
 
   async find(conditions: { [k: string]: any } = {}): Promise<Admin[]> {
-    return this.adminModel.find(conditions).exec();
+    return this.adminModel.find(conditions).lean().exec();
   }
 
   async findOne(conditions: { [k: string]: any } = {}): Promise<Admin> {
-    return this.adminModel.findOne(conditions).exec();
+    return this.adminModel.findOne(conditions).lean().exec();
   }
 }
