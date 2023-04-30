@@ -10,6 +10,7 @@ import { DatabaseModule } from 'src/database/database.module';
 import { AuthController } from './auth.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
+import { CryptoService } from 'src/crypto/crypto.service';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthGuard } from './auth.guard';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    CryptoService
   ],
   exports: [AuthService],
   controllers: [AuthController],

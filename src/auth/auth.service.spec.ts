@@ -49,15 +49,15 @@ describe('AuthService', () => {
   it('signIn should throw UnauthorizedException if user not found', async () => {
     mockAdminService.findOne.mockResolvedValueOnce(null);
 
-    await expect(service.signIn('test@test.com', 'test')).rejects.toThrow(UnauthorizedException);
+    await expect(service.login('test@test.com', 'test')).rejects.toThrow(UnauthorizedException);
   });
 
-  it('signIn should return access_token if credentials are valid', async () => {
+  it('login should return access_token if credentials are valid', async () => {
     const user = { email: 'test@test.com', password: 'test', _id: '123' };
     mockAdminService.findOne.mockResolvedValueOnce(user);
     mockJwtService.signAsync.mockResolvedValueOnce('fake_token');
 
-    const result = await service.signIn('test@test.com', 'test');
+    const result = await service.login('test@test.com', 'test');
     expect(result).toBeDefined();
     expect(result.access_token).toBe('fake_token');
   });

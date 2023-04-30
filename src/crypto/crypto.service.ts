@@ -4,14 +4,19 @@ import { promisify } from 'util';
 
 @Injectable()
 export class CryptoService {
-  private readonly iv = randomBytes(16);
+  private iv: Buffer;
 
   constructor() {
-    const ENC_KEY = process.env.ENC_KEY;
+    const { ENC_KEY, RANDOM_BYTES } = process.env;
 
     if (!ENC_KEY || ENC_KEY.length !== 32) {
       throw new Error('ENC_KEY must be set and must be 32 bytes long');
     }
+
+    if (!RANDOM_BYTES) {
+      throw new Error('ENC_KEY must be set and must be 32 bytes long');
+    }
+    this.iv = Buffer.from(process.env.RANDOM_BYTES, "hex")
   }
 
   async encrypt(text: string): Promise<string> {
