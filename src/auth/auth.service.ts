@@ -20,22 +20,12 @@ export class AuthService {
 
   async signIn(username, pass) {
     const user = await this.adminService.findOne({ email: username });
-    if (user?.password !== pass) {
+    if (!user || user?.password !== pass) {
       throw new UnauthorizedException();
     }
     const payload = { email: user.email, sub: user._id.toString() };
     return {
       access_token: await this.jwtService.signAsync(payload),
-    };
-  }
-
-  async login(user: any) {
-    const payload = { username: user.email, sub: user._id.toString() };
-    const access_token = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-    });
-    return {
-      access_token,
     };
   }
 }
