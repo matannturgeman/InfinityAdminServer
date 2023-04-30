@@ -10,10 +10,4 @@ export class AppController {
   root(): string {
     return "Welcome to Infinity Admin!"
   }
-
-  @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
-  }
 }
