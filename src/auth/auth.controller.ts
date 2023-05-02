@@ -12,6 +12,8 @@ import { AuthGuard } from '../common/guards/auth.guard';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 import { Public } from '../common/decorators/public.metadata';
+import { User } from '../database/schemas/admin.schema';
+import { GetCurrentUser } from '../common/decorators/get-current-user-id.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +29,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  getProfile(@GetCurrentUser() user: User) {
+    return user;
   }
 }

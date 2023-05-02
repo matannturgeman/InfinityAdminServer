@@ -13,7 +13,7 @@ import { UnprocessableEntityException } from '../exceptions/unprocessableEntityE
 
 
 const getAdminPipe = new ValidationPipe({
-  exceptionFactory: () => new UnprocessableEntityException('Ivalid id', 'Ivalid id'),
+  exceptionFactory: () => new UnprocessableEntityException('Invalid id', 'Invalid id'),
 });
 
 @Controller('admin')

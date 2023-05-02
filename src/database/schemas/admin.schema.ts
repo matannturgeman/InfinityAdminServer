@@ -14,3 +14,9 @@ export class Admin {
   @prop()
   email: string;
 }
+
+export interface User {
+  id: Types.ObjectId;
+  name: string;
+  email: string;
+}

@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AdminService } from '../admin/admin.service';
 import { JwtService } from '@nestjs/jwt';
 import { CryptoService } from '../crypto/crypto.service';
+import { Admin, User } from '../database/schemas/admin.schema';
 
 @Injectable()
 export class AuthService {
@@ -12,23 +13,24 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.adminService.findOne({ email: username });
+    const admin: Admin = await this.adminService.findOne({ email: username });
     const encryptedPassword = await this.cryptoService.encrypt(pass);
-    if (!user || user?.password !== encryptedPassword) {
+    if (!admin || admin?.password !== encryptedPassword) {
       return null;
     }
-    const { password, ...result } = user;
+    const { password, ...result } = admin;
     return result;
   }
 
   async login(username, pass) {
-    const user = await this.adminService.findOne({ email: username });
+    const admin = await this.adminService.findOne({ email: username });
     const encryptedPassword = await this.cryptoService.encrypt(pass);
-    if (!user || user?.password !== encryptedPassword) {
+    if (!admin || admin?.password !== encryptedPassword) {
       throw new UnauthorizedException();
     }
-    const { _id, password, ...restUser } = user;
-    const payload = { id: _id.toString(), ...restUser };
+    const { _id, password, ...restUser } = admin;
+    const payload: User = { id: _id, ...restUser };
+    
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
