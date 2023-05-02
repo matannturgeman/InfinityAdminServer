@@ -5,6 +5,8 @@ import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 import { AuthGuard } from '../common/guards/auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
+import { User } from '../database/schemas/admin.schema';
+import { Types } from 'mongoose';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -45,10 +47,9 @@ describe('AuthController', () => {
   });
 
   it('should return user data when getProfile is called', async () => {
-    const fakeUser = { email: 'test@test.com' };
-    const req = { user: fakeUser };
+    const fakeUser: User = { id: new Types.ObjectId(), name: 'test', email: 'test@test.com' };
 
-    const result = controller.getProfile(req);
+    const result = controller.getProfile(fakeUser);
 
     expect(result).toBe(fakeUser);
   });
