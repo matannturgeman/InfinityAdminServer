@@ -1,11 +1,12 @@
 import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 import { Admin } from './interfaces/admin.interface';
+import { ADMIN_MODEL } from './providers/admin.providers';
 
 @Injectable()
 export class AdminService {
   constructor(
-    @Inject('ADMIN_MODEL')
+    @Inject(ADMIN_MODEL)
     private adminModel: Model<Admin>,
   ) {}
 

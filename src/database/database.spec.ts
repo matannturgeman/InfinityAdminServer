@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { databaseProviders } from './database.providers';
+import { DATABASE_CONNECTION, databaseProviders } from './database.providers';
 
 describe('Database', () => {
   let providers;
@@ -8,7 +8,7 @@ describe('Database', () => {
     providers = await Test.createTestingModule({
       providers: [
         ...databaseProviders.map((provider) => {
-          if (provider.provide === 'DATABASE_CONNECTION') {
+          if (provider.provide === DATABASE_CONNECTION) {
             return {
               ...provider,
               useFactory: jest.fn(() => ({})), // Mocking the useFactory function

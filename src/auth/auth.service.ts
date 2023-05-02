@@ -1,12 +1,17 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AdminService } from '../admin/admin.service';
 import { JwtService } from '@nestjs/jwt';
 import { CryptoService } from '../crypto/crypto.service';
 import { Admin, User } from '../database/schemas/admin.schema';
+import { TOKEN_MODEL } from './providers/auth.providers';
+import { Token } from '../database/schemas/token.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(TOKEN_MODEL)
+    private tokenModel: Model<Token>,
     private adminService: AdminService,
     private jwtService: JwtService,
     private cryptoService: CryptoService,

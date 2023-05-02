@@ -6,11 +6,11 @@ import { APP_GUARD } from '@nestjs/core';
 
 import { LocalStrategy } from './local.strategy';
 import { AuthService } from './auth.service';
-import { adminProviders } from '../admin/admin.providers';
 import { DatabaseModule } from '../database/database.module';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from '../common/guards/auth.guard';
 import { CryptoService } from '../crypto/crypto.service';
+import { authProviders } from './providers/auth.providers';
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { CryptoService } from '../crypto/crypto.service';
   providers: [
     AuthService,
     LocalStrategy,
-    ...adminProviders,
+    ...authProviders,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

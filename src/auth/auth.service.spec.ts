@@ -4,6 +4,8 @@ import { AdminService } from '../admin/admin.service';
 import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedException } from '@nestjs/common';
 import { CryptoService } from '../crypto/crypto.service';
+import { TOKEN_MODEL } from './providers/auth.providers';
+
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -13,6 +15,8 @@ describe('AuthService', () => {
     encrypt: jest.fn().mockImplementation((input) => Promise.resolve(input)),
     decrypt: jest.fn(),
   };
+  let mockTokenModel = { /* your mock implementation here */ };
+
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,6 +25,8 @@ describe('AuthService', () => {
         { provide: AdminService, useValue: mockAdminService },
         { provide: JwtService, useValue: mockJwtService },
         { provide: CryptoService, useValue: mockCryptoService },
+        { provide: TOKEN_MODEL, useValue: mockTokenModel },  // Provide mock for TOKEN_MODEL
+
       ],
     }).compile();
 
