@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LocalStrategy } from './local.strategy';
-import { AdminModule } from 'src/admin/admin.module';
+import { AdminModule } from '../admin/admin.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
-
-import { adminProviders } from 'src/admin/admin.providers';
-import { DatabaseModule } from 'src/database/database.module';
-import { AuthController } from './auth.controller';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth.guard';
-import { CryptoService } from 'src/crypto/crypto.service';
+
+import { LocalStrategy } from './local.strategy';
+import { AuthService } from './auth.service';
+import { adminProviders } from '../admin/admin.providers';
+import { DatabaseModule } from '../database/database.module';
+import { AuthController } from './auth.controller';
+import { AuthGuard } from '../common/guards/auth.guard';
+import { CryptoService } from '../crypto/crypto.service';
 
 @Module({
   imports: [
