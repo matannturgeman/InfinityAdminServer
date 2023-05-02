@@ -1,9 +1,9 @@
 import { prop } from '@typegoose/typegoose';
-import { Types } from 'mongoose';
+import { ObjectId } from '../../common/types/objectId.type';
 
 export class Admin {
   @prop()
-  _id: Types.ObjectId;
+  _id: ObjectId;
 
   @prop()
   name: string;
@@ -16,7 +16,7 @@ export class Admin {
 }
 
 export interface User {
-  id: Types.ObjectId;
+  id: ObjectId;
   name: string;
   email: string;
 }

@@ -1,12 +1,12 @@
 import { Ref, prop } from '@typegoose/typegoose';
-import { Types } from 'mongoose';
 import { Admin } from './admin.schema';
+import { ObjectId } from '../../common/types/objectId.type';
 
 export class Token {
   @prop()
-  _id: Types.ObjectId;
+  _id: ObjectId;
 
-  @prop({ ref: () => Admin })
+  @prop({ ref: () => Admin, unique: true  })
   adminID: Ref<Admin>;;
 
   @prop()
