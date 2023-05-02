@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
-import { AuthGuard } from './auth.guard';
+import { LocalAuthGuard } from '../common/guards/local-auth.guard';
+import { AuthGuard } from '../common/guards/auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let mockAuthService = { signIn: jest.fn() };
+  let mockAuthService = { login: jest.fn() };
   let mockLocalAuthGuard = { canActivate: jest.fn() };
   let mockAuthGuard = { canActivate: jest.fn() };
   let mockJwtService = {};
@@ -36,12 +36,12 @@ describe('AuthController', () => {
   it('should return a JWT when signIn is called', async () => {
     const signInDto = { username: 'test@test.com', password: 'test' };
     const fakeToken = 'fake_token';
-    mockAuthService.signIn.mockResolvedValueOnce({ access_token: fakeToken });
+    mockAuthService.login.mockResolvedValueOnce({ access_token: fakeToken });
 
     const result = await controller.signIn(signInDto);
 
     expect(result.access_token).toBe(fakeToken);
-    expect(mockAuthService.signIn).toBeCalledWith(signInDto.username, signInDto.password);
+    expect(mockAuthService.login).toBeCalledWith(signInDto.username, signInDto.password);
   });
 
   it('should return user data when getProfile is called', async () => {

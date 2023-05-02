@@ -3,11 +3,16 @@ import { AuthService } from './auth.service';
 import { AdminService } from '../admin/admin.service';
 import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedException } from '@nestjs/common';
+import { CryptoService } from '../crypto/crypto.service';
 
 describe('AuthService', () => {
   let service: AuthService;
   let mockAdminService = { findOne: jest.fn() };
   let mockJwtService = { sign: jest.fn(), signAsync: jest.fn() };
+  let mockCryptoService = {
+    encrypt: jest.fn().mockImplementation((input) => Promise.resolve(input)),
+    decrypt: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -15,6 +20,7 @@ describe('AuthService', () => {
         AuthService,
         { provide: AdminService, useValue: mockAdminService },
         { provide: JwtService, useValue: mockJwtService },
+        { provide: CryptoService, useValue: mockCryptoService },
       ],
     }).compile();
 
