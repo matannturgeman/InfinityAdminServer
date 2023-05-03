@@ -30,11 +30,11 @@ import { authProviders } from './providers/auth.providers';
     AuthService,
     LocalStrategy,
     ...authProviders,
+    CryptoService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
-    CryptoService
   ],
   exports: [AuthService],
   controllers: [AuthController],

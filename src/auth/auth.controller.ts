@@ -7,7 +7,6 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '../common/guards/auth.guard';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 import { Public } from '../common/decorators/public.metadata';
@@ -18,7 +17,6 @@ import { GetCurrentUser } from '../common/decorators/get-current-user-id.decorat
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @Public()
@@ -26,7 +24,6 @@ export class AuthController {
     return this.authService.login(loginDto.username, loginDto.password);
   }
 
-  @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@GetCurrentUser() user: User) {
     return user;
