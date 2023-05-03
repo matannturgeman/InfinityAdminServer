@@ -1,6 +1,6 @@
 import { Ref, prop } from '@typegoose/typegoose';
 import { Admin } from './admin.schema';
-import { ObjectId } from '../../common/types/objectId.type';
+import type { ObjectId } from '../../common/types/objectId.type';
 
 export class Token {
   @prop()

@@ -6,7 +6,7 @@ import { AuthGuard } from '../common/guards/auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { User } from '../database/schemas/admin.schema';
-import { Types } from 'mongoose';
+import { ObjectId } from '../common/types/objectId.type';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -47,7 +47,7 @@ describe('AuthController', () => {
   });
 
   it('should return user data when getProfile is called', async () => {
-    const fakeUser: User = { id: new Types.ObjectId(), name: 'test', email: 'test@test.com' };
+    const fakeUser: User = { id: new ObjectId(), name: 'test', email: 'test@test.com' };
 
     const result = controller.getProfile(fakeUser);
 

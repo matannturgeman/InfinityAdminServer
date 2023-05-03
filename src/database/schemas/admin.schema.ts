@@ -1,5 +1,5 @@
 import { prop } from '@typegoose/typegoose';
-import { ObjectId } from '../../common/types/objectId.type';
+import type { ObjectId } from '../../common/types/objectId.type';
 
 export class Admin {
   @prop()

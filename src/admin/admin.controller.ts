@@ -5,11 +5,11 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Types } from 'mongoose';
 
 import { AdminService } from './admin.service';
 import { AdminParams } from './dto/admin.dto';
 import { UnprocessableEntityException } from '../exceptions/unprocessableEntityException.exception';
+import { ObjectId } from '../common/types/objectId.type';
 
 
 const getAdminPipe = new ValidationPipe({
@@ -28,6 +28,6 @@ export class AdminController {
   @Get('/:id')
   @UsePipes(getAdminPipe)
   getAdmin(@Param() params: AdminParams) {
-    return this.adminService.findOne({ _id: new Types.ObjectId(params.id) });
+    return this.adminService.findOne({ _id: new ObjectId(params.id) });
   }
 }
