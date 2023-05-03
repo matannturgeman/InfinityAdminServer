@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedException } from '@nestjs/common';
 import { CryptoService } from '../crypto/crypto.service';
 import { TOKEN_MODEL } from './providers/auth.providers';
-
+import { ObjectId } from '../common/types/objectId.type';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -15,8 +15,11 @@ describe('AuthService', () => {
     encrypt: jest.fn().mockImplementation((input) => Promise.resolve(input)),
     decrypt: jest.fn(),
   };
-  let mockTokenModel = { /* your mock implementation here */ };
-
+  let mockTokenModel = {
+    findOneAndUpdate: jest.fn().mockReturnThis(),
+    lean: jest.fn().mockReturnThis(),
+    exec: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,8 +28,7 @@ describe('AuthService', () => {
         { provide: AdminService, useValue: mockAdminService },
         { provide: JwtService, useValue: mockJwtService },
         { provide: CryptoService, useValue: mockCryptoService },
-        { provide: TOKEN_MODEL, useValue: mockTokenModel },  // Provide mock for TOKEN_MODEL
-
+        { provide: TOKEN_MODEL, useValue: mockTokenModel }, // Provide mock for TOKEN_MODEL
       ],
     }).compile();
 
@@ -43,7 +45,10 @@ describe('AuthService', () => {
   });
 
   it('should return null if password does not match', async () => {
-    mockAdminService.findOne.mockResolvedValueOnce({ email: 'test@test.com', password: 'wrong' });
+    mockAdminService.findOne.mockResolvedValueOnce({
+      email: 'test@test.com',
+      password: 'wrong',
+    });
     expect(await service.validateUser('test@test.com', 'test')).toBeNull();
   });
 
@@ -61,7 +66,9 @@ describe('AuthService', () => {
   it('signIn should throw UnauthorizedException if user not found', async () => {
     mockAdminService.findOne.mockResolvedValueOnce(null);
 
-    await expect(service.login('test@test.com', 'test')).rejects.toThrow(UnauthorizedException);
+    await expect(service.login('test@test.com', 'test')).rejects.toThrow(
+      UnauthorizedException,
+    );
   });
 
   it('login should return access_token if credentials are valid', async () => {
@@ -73,4 +80,28 @@ describe('AuthService', () => {
     expect(result).toBeDefined();
     expect(result.access_token).toBe('fake_token');
   });
+
+  it('should update access token for the given admin ID', async () => {
+    const adminID = new ObjectId();
+    const token = 'fake_token';
+    const hashedToken = token; // As the mockCryptoService.encrypt just returns the input
+  
+    // Set the resolved value for exec method
+    mockTokenModel.exec.mockResolvedValueOnce({
+      adminID,
+      token: hashedToken,
+    });
+    
+    const result = await service.updateAccessToken(adminID, token);
+  
+    expect(result).toBeDefined();
+    expect(result.adminID.toString()).toBe(adminID.toString());
+    expect(result.token).toBe(hashedToken);
+    expect(mockTokenModel.findOneAndUpdate).toHaveBeenCalledWith(
+      { adminID },
+      { token: hashedToken },
+      { upsert: true, new: true },
+    );
+  });
+  
 });

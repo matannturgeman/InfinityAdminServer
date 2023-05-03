@@ -6,7 +6,7 @@ import { CryptoService } from '../crypto/crypto.service';
 import { Admin, User } from '../database/schemas/admin.schema';
 import { TOKEN_MODEL } from './providers/auth.providers';
 import { Token } from '../database/schemas/token.schema';
-import { ObjectId } from '../common/types/objectId.type';
+import type { ObjectId } from '../common/types/objectId.type';
 
 @Injectable()
 export class AuthService {
@@ -28,8 +28,16 @@ export class AuthService {
     return result;
   }
 
-  async updateAccessToken(adminID: ObjectId, token: string): Promise<any> {
-    return this.tokenModel.updateOne({ adminID }, { token }, { upsert: true, new: true }).exec();
+  async updateAccessToken(adminID: ObjectId, token: string): Promise<Token> {
+    const hashedToken = await this.cryptoService.encrypt(token);
+    return this.tokenModel
+      .findOneAndUpdate(
+        { adminID },
+        { token: hashedToken },
+        { upsert: true, new: true },
+      )
+      .lean()
+      .exec();
   }
 
   async login(username, pass) {
@@ -40,11 +48,11 @@ export class AuthService {
     }
     const { _id, password, ...restUser } = admin;
     const payload: User = { id: _id, ...restUser };
-    
+
     const access_token = await this.jwtService.signAsync(payload);
 
     // not waiting intentionally
-    this.updateAccessToken(payload.id, access_token)
+    this.updateAccessToken(payload.id, access_token);
 
     return {
       access_token,
