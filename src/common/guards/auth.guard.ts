@@ -26,13 +26,21 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async validateTokenFromCollection(user: User, token) {
-    const tokenDoc: Token = await this.tokenModel
-      .findOne({ adminID: user.id }, { token: 1 })
-      .lean()
-      .exec();
-    if (!tokenDoc) throw new UnauthorizedException();
-    const decryptedToken = await this.cryptoService.decrypt(tokenDoc.token);
-    if (token !== decryptedToken) throw new UnauthorizedException();
+    try {
+      const tokenDoc: Token = await this.tokenModel
+        .findOne({ adminID: user.id }, { token: 1 })
+        .lean()
+        .exec();
+      if (!tokenDoc) throw new UnauthorizedException();
+      const decryptedToken = await this.cryptoService.decrypt(tokenDoc.token);
+      if (token !== decryptedToken) throw new UnauthorizedException();
+    } catch (err) {
+      await this.tokenModel
+        .findOneAndDelete({ adminID: user.id })
+        .lean()
+        .exec();
+      throw new UnauthorizedException();
+    }
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
