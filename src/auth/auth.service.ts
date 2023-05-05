@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable, UnauthorizedException,  } from '@nestjs/common';
 import { AdminService } from '../admin/admin.service';
 import { JwtService } from '@nestjs/jwt';
 import { CryptoService } from '../crypto/crypto.service';
@@ -56,6 +56,7 @@ export class AuthService {
 
     return {
       access_token,
+      statusCode: HttpStatus.OK
     };
   }
 }
