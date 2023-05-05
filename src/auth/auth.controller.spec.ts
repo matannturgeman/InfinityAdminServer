@@ -1,11 +1,13 @@
+import { HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtService } from '@nestjs/jwt';
+import { Reflector } from '@nestjs/core';
+
 import { AuthController } from './auth.controller';
+import { User } from '../database/schemas/admin.schema';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 import { AuthGuard } from '../common/guards/auth.guard';
-import { JwtService } from '@nestjs/jwt';
-import { Reflector } from '@nestjs/core';
-import { User } from '../database/schemas/admin.schema';
 import { ObjectId } from '../common/types/objectId.type';
 
 describe('AuthController', () => {
@@ -51,6 +53,9 @@ describe('AuthController', () => {
 
     const result = controller.getProfile(fakeUser);
 
-    expect(result).toBe(fakeUser);
+    expect(result).toEqual({
+      user: fakeUser,
+      statusCode: HttpStatus.OK,
+    });
   });
 });
