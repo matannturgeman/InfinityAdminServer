@@ -7,7 +7,6 @@ export const GetCurrentUser = createParamDecorator(
     const request = context.switchToHttp().getRequest();
     const user: User = request.user;
     if (!user) throw new UserErrorException('No current user found');
-
     return user;
   },
 );
