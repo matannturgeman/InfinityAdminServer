@@ -1,5 +1,10 @@
 import { Model } from 'mongoose';
-import { HttpStatus, Inject, Injectable, UnauthorizedException,  } from '@nestjs/common';
+import {
+  HttpStatus,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AdminService } from '../admin/admin.service';
 import { JwtService } from '@nestjs/jwt';
 import { CryptoService } from '../crypto/crypto.service';
@@ -40,6 +45,10 @@ export class AuthService {
       .exec();
   }
 
+  async deleteAccessToken(adminID: ObjectId): Promise<Token> {
+    return this.tokenModel.findOneAndDelete({ adminID }).lean().exec();
+  }
+
   async login(username, pass) {
     const admin = await this.adminService.findOne({ email: username });
     const encryptedPassword = await this.cryptoService.encrypt(pass);
@@ -56,7 +65,7 @@ export class AuthService {
 
     return {
       access_token,
-      statusCode: HttpStatus.OK
+      statusCode: HttpStatus.OK,
     };
   }
 
@@ -67,9 +76,12 @@ export class AuthService {
     };
   }
 
-  logout(user: User) {
+  async logout(user: User) {
+    const { email } = user;
+    const admin = await this.adminService.findOne({ email });
+    await this.deleteAccessToken(admin._id);
+
     return {
-      user,
       statusCode: HttpStatus.OK,
     };
   }
