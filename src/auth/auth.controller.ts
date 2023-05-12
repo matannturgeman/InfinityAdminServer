@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Post,
+  Put,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from '../common/decorators/public.metadata';
@@ -24,9 +25,11 @@ export class AuthController {
 
   @Get('profile')
   getProfile(@GetCurrentUser() user: User) {
-    return {
-      user,
-      statusCode: HttpStatus.OK,
-    };
+    return this.authService.getProfile(user);
+  }
+
+  @Put('logout')
+  logout(@GetCurrentUser() user: User) {
+    return this.authService.logout(user);
   }
 }

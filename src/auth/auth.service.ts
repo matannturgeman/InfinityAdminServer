@@ -59,4 +59,18 @@ export class AuthService {
       statusCode: HttpStatus.OK
     };
   }
+
+  getProfile(user: User) {
+    return {
+      user,
+      statusCode: HttpStatus.OK,
+    };
+  }
+
+  logout(user: User) {
+    return {
+      user,
+      statusCode: HttpStatus.OK,
+    };
+  }
 }
